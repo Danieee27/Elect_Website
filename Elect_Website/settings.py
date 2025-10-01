@@ -17,8 +17,8 @@ SECRET_KEY = 'django-insecure-pt3oicyguu@e+sjl=igg(@(13w0a-px(akj+-rwdozd8d^(ql5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-CSRF_TRUSTED_ORIGINS = []
+ALLOWED_HOSTS = ['electwebsite-production.up.railway.app', 'https://electwebsite-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['electwebsite-production.up.railway.app', 'https://electwebsite-production.up.railway.app']
 
 # Application definition
 
@@ -72,9 +72,8 @@ WSGI_APPLICATION = 'Elect_Website.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default = os.getenv("DATABASE_URL")
-    )
+    #default git
+    
 }
 
 
