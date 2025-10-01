@@ -1,2 +1,2 @@
-web: gunicorn PROJECTNAME.wsgi --log-file
-web: python manage.py migrate && gunicorn PROJECTNAME.wsg
+web: gunicorn Elect_Website.wsgi --log-file
+web: python manage.py migrate && gunicorn Elect_Website.wsg
