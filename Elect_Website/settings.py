@@ -17,8 +17,8 @@ SECRET_KEY = 'django-insecure-pt3oicyguu@e+sjl=igg(@(13w0a-px(akj+-rwdozd8d^(ql5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['learnpython-production-c9dd.up.railway.app', 'https://learnpython-production-c9dd.up.railway.app']
-CSRF_TRUSTED_ORIGINS = [ 'https://learnpython-production-c9dd.up.railway.app']
+ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
@@ -114,10 +114,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = ['static/']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATIC_ROOT = BASE_DIR/'staticfiles'
+
 
 #whitenoise static stuff
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR/'staticfiles'
 
 
 MEDIA_URL = 'media/'
