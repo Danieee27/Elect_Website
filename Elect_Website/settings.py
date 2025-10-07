@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'Cart',
     'payment',
     'whitenoise.runserver_nostatic',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#paypal stuff
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = 'bookifyNow08@gmail.com' #Business Sandbox account
