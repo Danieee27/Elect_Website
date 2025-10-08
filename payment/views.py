@@ -153,16 +153,24 @@ def billing_info(request):
         my_shipping = request.POST
         request.session['my_shipping'] = my_shipping
 
+        full_name = my_shipping['shipping_full_name'] 
+        email = my_shipping['shipping_email']
+        
+        shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
+        amount_paid = totals
+
         #get the host
         host = request.get_host()
+
+        my_invoice = str(uuid.uuid4())
 
         #create paypal form
         paypal_dict = {
             'business': settings.PAYPAL_RECEIVER_EMAIL,
             'amount': totals,
-            'item_name': 'Book Order',
+            'item_name': 'Order {}'.format(str(uuid.uuid4())), #unique order id
             'no_shipping': '2',
-            'invoice': str(uuid.uuid4()), #unique invoice id
+            'invoice': my_invoice, #unique invoice id
             'currency_code': 'NGN', 
             'notify_url': 'https://{}{}'.format(host, reverse('paypal-ipn')),
             'return_url': 'https://{}{}'.format(host, reverse('payment_success')),
@@ -176,22 +184,61 @@ def billing_info(request):
         #see if logged in
         if request.user.is_authenticated:
             billing_form = PaymentForm()
+
+            user = request.user
+            #create order
+            create_order = Order(user = user, full_name = full_name, email = email, shipping_address = shipping_address, amount_paid = amount_paid, invoice = my_invoice)
+            create_order.save()
+
+            order_id = create_order.pk
+            for product in cart_products:
+                product_id = product.id
+                price = product.price
+                for key, value in quantities.items():
+                    if int(key) == product.id:
+                        create_order_item = OrderItem(order_id = order_id, product_id = product_id, user = user, quantity = value, price = price)
+                        create_order_item.save()
+
+            #delete cart
+          
+
+            #Delete cart from db
+            current_user = Profile.objects.filter(user__id = request.user.id)
+            #Delete shopping cart in db
+            current_user.update(old_cart = "")
+
             return render(request, "payment/billing_info.html", {'paypal_form': paypal_form, 'cart_products': cart_products, "quantities": quantities, "totals": totals, 'shipping_info': request.POST, "billing_form": billing_form})
+        
         else:
+            create_order = Order(full_name = full_name, email = email, shipping_address = shipping_address, amount_paid = amount_paid, invoice = my_invoice)
+            create_order.save()
+
+            order_id = create_order.pk
+            for product in cart_products:
+                product_id = product.id
+                price = product.price
+                for key, value in quantities.itmes():
+                    if int(key) == product.id:
+                        create_order_item = OrderItem(order_id = order_id, product_id = product_id, user = user, quantity = value, price = price)
+                        create_order_item.save()
+
+            #delete cart
+           
+
+
             billing_info = PaymentForm()
             return render(request, "payment/billing_info.html", {'paypal_form': paypal_form, 'cart_products': cart_products, "quantities": quantities, "totals": totals, 'shipping_info': request.POST, "billing_form": billing_form})
 
-
-
-
-        shipping_form = request.POST
-        return render(request, "payment/billing_info.html", {'cart_products': cart_products, "quantities": quantities, "totals": totals, 'shipping_form': shipping_form})
     else:
         messages.success(request, "Access Denied!")
         return redirect("home")
 
 
 def payment_success(request):
+    for key in list(request.session.keys()):
+                if key == "session_key":
+                    del request.session[key]
+
     return render(request, "payment/payment_success.html", {})
 
 def payment_failed(request):
