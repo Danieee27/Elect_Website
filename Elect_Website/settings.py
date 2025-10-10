@@ -2,6 +2,10 @@ from pathlib import Path
 import os
 import dj_database_url
 from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +16,7 @@ load_dotenv()
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pt3oicyguu@e+sjl=igg(@(13w0a-px(akj+-rwdozd8d^(ql5'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,6 +37,8 @@ INSTALLED_APPS = [
     'payment',
     'whitenoise.runserver_nostatic',
     'paypal.standard.ipn',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +148,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #paypal stuff
 PAYPAL_TEST = True
 PAYPAL_RECEIVER_EMAIL = 'bookifyNow08@gmail.com' #Business Sandbox account
+
+# Cloudinary configuration
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
+    'API_KEY': os.getenv('API_KEY'),
+    'API_SECRET': os.getenv('API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

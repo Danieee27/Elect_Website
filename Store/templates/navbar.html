@@ -1,7 +1,7 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-lg navbar-light " style = "background-color:#f6c492;">
-    <div class="container px-4 px-lg-5">
+<nav class="navbar navbar-expand-lg navbar-light " style = "background-color:#f6c492; padding-top: 2px; padding-bottom: 2px; padding-left: 4px; padding-right: 4px; ">
+    
     <a href = "{% url 'home' %}"><img src="{% static 'medias/Bookify.png' %}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -58,5 +58,5 @@
                     <span class="badge bg-dark text-white ms-1 rounded-pill" id = "cart_quantity">{{ cart|length }}</span></a>
             </form>
         </div>
-    </div>
+    
 </nav>

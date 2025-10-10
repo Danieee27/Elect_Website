@@ -1,71 +1,68 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Search Product</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Find what you are looking for!!</p>
-        </div>
-    </div>
-</header>
 
-<div class = "container">
-    <div class = "row">
-        <center>
-            <div class="col-8">
-                </br></br>
+<header class="bg-white py-5" >
+            <div style="display: flex; padding-left: 100px; padding-right: 100px; justify-content: space-between;">
+                <div style="display: flex; align-items: left; gap: 15px;">
+                <h2 class = "brand-name" style = "font-family: Papyrus, fantasy; font-weight: 100; color: black;">Bookify</h2>
+                <form method = "POST" action = "{% url 'search' %}" class="d-flex" role="search">
+                     {% csrf_token %}
+                    <input class="form-control me-2" type="search" placeholder="Search" style = "border-radius: 30px; width: 270px; height: 38px;" aria-label="Search" name = "searched"/>
+                    <button type="submit" 
+                        style=" border: none;  color: grey; background: transparent;">
+                        <i class="bi bi-search" style = "font-size: 1.2rem;" ></i>
+                    </button>
+                </form>
+                </div>
+                <div style="display: flex; align-items: right; gap: 25px;">
+                <form class="d-flex" role="submit" >
+                    <button class="btn btn-outline-success" type="submit">LOGIN</button>
 
-                <div class="card">
-                    <div class="card-header">
-                      Search Here
-                    </div>
-                    <div class="card-body">
-                      <form method = "POST" action = "{% url 'search' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <input class="form-control" id="exampleFormControlInput1" placeholder="Search" name = "searched">
-                            <!--placeholders are those background texts that show in a space usually meant to be filled in-->
-                            <!--"style" in html allows us to assign attributes to various of our code instead of having a seperate CSS code-->
-                            <!--but in this case, the style will change the color of the input, to change the color of the placeholder,, a seperate css file is compulsory-->
-                          </div>
-                          <button type="submit" class="btn btn-primary">Search</button>
-                      </form>
-                    </div>
-                  </div>
+                </form>
+               
+                </div>
+            </div>
+        </header>
+        <style>
+  button[type="submit"]:hover i {
+    color: black; /* green */
+    transform: scale(1.2);
+  }
+</style>
+        <hr style="width: 80%; height: 1px; background-color: #939393; border: none; margin: -25px auto 5px auto;">
 
-</br></br>
-<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-1 gx-lg-2 row-cols-2 row-cols-md-3 row-cols-xl-6 justify-content-left">
+
 {% if searched %}
-  {% for product in searched %}
-    <div class="col mb-5">
-                        <div class="card h-100">
+    {% for product in searched %}
+        <div class="col mb-5">
+                        <div class="card" style = "border-radius: 6px; width: 10rem; height: 24rem; border: none;">
                             <!-- Product image-->
-                            <img class="card-img-top" src= "{{ product.image.url }}" alt="..." />
+                            <img class="card-img-top d-block mx-auto" src= "{{ product.image.url }}" alt="..." style = "height: 215px; object-fit: cover; margin-bottom: 0.06rem; margin-top: 0.1rem; ">
                             <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
+                            <div class="card-body text-start">
+                                    <p style="color: rgb(100, 100, 100); font-size: 0.8rem; margin-bottom: 0.1rem; text-transform: uppercase;">{{product.category}}</p>
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+                                    <p style="color: #f6c492; font-size: 1.1rem; margin-bottom: 0.2rem; ">{{ product.name }}</p>
                                     <!-- Product price-->
                                     
-                                    ₦{{ product.price }}
-                                    <br/>
-                                    Available in sizes: {{ product.description }}
-                                </div>
+                                    <p class = "mb-0" style="color: #f6c492;">₦{{ product.price }}</p>
+                                    <a href="{% url 'product' product.id %}"><button type="button" class="btn btn-outline-primary">Learn More</button></a>
+                                    
+                                    
+                                
                             </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">About Product</a></div>
-                            </div>
+                            
                         </div>
-                    </div>
-  {% endfor %}
+        </div>
+    {% endfor %}
 {% endif %}
-</div>
+                </div>
             </div>
-        </center>
-    </div>
-</div>
+        </section>
+ 
 
 {% endblock %}
