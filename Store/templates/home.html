@@ -8,7 +8,7 @@
         <header class="bg-white py-5" >
             <div style="display: flex; padding-left: 100px; padding-right: 100px; justify-content: space-between;">
                 <div style="display: flex; align-items: left; gap: 15px;">
-                <h2 class = "brand-name" style = "font-family: Papyrus, fantasy; font-weight: 100; color: black;">Bookify</h2>
+                <a href = "{% url 'home' %}" style = "text-decoration: none;"><h2 class = "brand-name" style = "font-family: Papyrus, fantasy; font-weight: 100; color: black;">Bookify</h2></a>
                 <form method = "POST" action = "{% url 'search' %}" class="d-flex" role="search">
                      {% csrf_token %}
                     <input class="form-control me-2" type="search" placeholder="Search" style = "border-radius: 30px; width: 270px; height: 38px;" aria-label="Search" name = "searched"/>
@@ -18,12 +18,17 @@
                     </button>
                 </form>
                 </div>
+                
                 <div style="display: flex; align-items: right; gap: 25px;">
-                <form class="d-flex" role="submit" >
-                    <button class="btn btn-outline-success" type="submit" style = "border-radius: 30px;">LOGIN</button>
-
-                </form>
-               
+                    {% if user.is_authenticated %}
+                        <form class="d-flex" role="submit" action = "{% url 'login' %}">
+                        <button class="btn btn-outline-success" type="submit" style = "border-radius: 30px;">LOGIN</button>
+                        </form>
+                    {% else %}
+                        <form class="d-flex" role="submit" action = "{% url 'logout' %}">
+                        <button class="btn btn-outline-secondary" type="submit" style = "border-radius: 30px; ">LOGOUT</button>
+                        </form>
+                {% endif %}
                 </div>
             </div>
         </header>
@@ -33,6 +38,7 @@
     transform: scale(1.2);
   }
 </style>
+
         <hr style="width: 80%; height: 1px; background-color: #939393; border: none; margin: -25px auto 5px auto;">
         <!-- Section-->
         <section class="py-5">

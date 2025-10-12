@@ -89,13 +89,13 @@ $(document).on('click', ".update-cart", function(e){
     url: "{% url 'Cart_update' %}",
     data: {
       product_id: $(this).data('index'),
-      product_qty: $('#select' + productid + 'option:selected').text(),
+      product_qty: $('#select' + productid).val(),
       csrfmiddlewaretoken: "{{ csrf_token }}",
       action: 'post'
     },
 
     success: function(json){
-      //console.log(json);
+      console.log(json);
       location.reload();
     },
     error: function(xhr, errmsg, err) {

@@ -15,7 +15,7 @@ class Cart():
     
 
     def db_add(self, product, quantity):
-        product_id = str(product)
+        product_id = str(product.id)
         product_qty = int(quantity)
 
 
@@ -72,7 +72,7 @@ class Cart():
         return quantities
 
     def update(self, product, quantity):
-        product_id = str(product)
+        product_id = str(product.id)
         product_qty = int(quantity)
 
         mycart = self.cart
@@ -94,7 +94,7 @@ class Cart():
        
     def delete(self, product):
         #{'4': 3}, where 4 is the product id and 3 is the quantity
-        product_id = str(product)
+        product_id = str(product.id)
         #delete from dictionary-cart
         if product_id in self.cart:
             del self.cart[product_id]

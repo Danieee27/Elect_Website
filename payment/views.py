@@ -97,17 +97,7 @@ def process_order(request):
                         create_order_item = OrderItem(order_id = order_id, product_id = product_id, user = user, quantity = value, price = price)
                         create_order_item.save()
 
-            #delete cart
-
-            for key in list(request.session.keys()):
-                if key == "session_key":
-                    del request.session[key]
-
-            #Delete cart from db
-            current_user = Profile.objects.filter(user__id = request.user.id)
-            #Delete shopping cart in db
-            current_user.update(old_cart = "")
-
+           
             messages.success(request, "Order Placed, Processing.....!")
             return redirect("home")
         
@@ -153,10 +143,10 @@ def billing_info(request):
         my_shipping = request.POST
         request.session['my_shipping'] = my_shipping
 
-        full_name = my_shipping['shipping_full_name'] 
-        email = my_shipping['shipping_email']
+        full_name = my_shipping.get('shipping_full_name', '') 
+        email = my_shipping.get('shipping_email', '')
         
-        shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
+        shipping_address = f"{my_shipping.get('shipping_address1', '')}\n{my_shipping.get('shipping_address2', '')}\n{my_shipping.get('shipping_city', '')}\n{my_shipping.get('shipping_state', '')}\n{my_shipping.get('shipping_zipcode', '')}\n{my_shipping.get('shipping_country'), ''}"
         amount_paid = totals
 
         #get the host
@@ -203,10 +193,7 @@ def billing_info(request):
           
 
             #Delete cart from db
-            current_user = Profile.objects.filter(user__id = request.user.id)
-            #Delete shopping cart in db
-            current_user.update(old_cart = "")
-
+            
             return render(request, "payment/billing_info.html", {'paypal_form': paypal_form, 'cart_products': cart_products, "quantities": quantities, "totals": totals, 'shipping_info': request.POST, "billing_form": billing_form})
         
         else:
@@ -217,16 +204,16 @@ def billing_info(request):
             for product in cart_products:
                 product_id = product.id
                 price = product.price
-                for key, value in quantities.itmes():
+                for key, value in quantities.items():
                     if int(key) == product.id:
-                        create_order_item = OrderItem(order_id = order_id, product_id = product_id, user = user, quantity = value, price = price)
+                        create_order_item = OrderItem(order_id = order_id, product_id = product_id, quantity = value, price = price)
                         create_order_item.save()
 
             #delete cart
            
 
 
-            billing_info = PaymentForm()
+            billing_form = PaymentForm()
             return render(request, "payment/billing_info.html", {'paypal_form': paypal_form, 'cart_products': cart_products, "quantities": quantities, "totals": totals, 'shipping_info': request.POST, "billing_form": billing_form})
 
     else:
@@ -260,7 +247,7 @@ def checkout(request):
 
     else:
         shipping_form = ShippingForm(request.POST or None)
-        return render(request, "payment/checkout.html", {'cart_products': cart_products, "quantities": quantities, "totals": totals}) 
+        return render(request, "payment/checkout.html", {'cart_products': cart_products, "quantities": quantities, "totals": totals, 'shipping_form': shipping_form}) 
 
 
 

@@ -2,35 +2,7 @@
 
 {% block content %}
 
-<header class="bg-white py-5" >
-            <div style="display: flex; padding-left: 100px; padding-right: 100px; justify-content: space-between;">
-                <div style="display: flex; align-items: left; gap: 15px;">
-                <h2 class = "brand-name" style = "font-family: Papyrus, fantasy; font-weight: 100; color: black;">Bookify</h2>
-                <form method = "POST" action = "{% url 'search' %}" class="d-flex" role="search">
-                     {% csrf_token %}
-                    <input class="form-control me-2" type="search" placeholder="Search" style = "border-radius: 30px; width: 270px; height: 38px;" aria-label="Search" name = "searched"/>
-                    <button type="submit" 
-                        style=" border: none;  color: grey; background: transparent;">
-                        <i class="bi bi-search" style = "font-size: 1.2rem;" ></i>
-                    </button>
-                </form>
-                </div>
-                <div style="display: flex; align-items: right; gap: 25px;">
-                <form class="d-flex" role="submit" >
-                    <button class="btn btn-outline-success" type="submit">LOGIN</button>
 
-                </form>
-               
-                </div>
-            </div>
-        </header>
-        <style>
-  button[type="submit"]:hover i {
-    color: black; /* green */
-    transform: scale(1.2);
-  }
-</style>
-        <hr style="width: 80%; height: 1px; background-color: #939393; border: none; margin: -25px auto 5px auto;">
 
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
